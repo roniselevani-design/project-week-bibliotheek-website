@@ -3,7 +3,7 @@
 # 📚 Bibliotheek Jongeren App – Zoetermeer
 
 ## 📖 Projectomschrijving
-Dit project is een **mobiele app** voor de bibliotheek van Zoetermeer, speciaal gericht op **jongeren van 12 t/m 24 jaar**.  
+Dit project is een **mobiele app/computer website** voor de bibliotheek van Zoetermeer, speciaal gericht op **jongeren van 12 t/m 24 jaar**.  
 De app helpt jongeren om:
 - Makkelijk boeken te vinden  
 - Te ontdekken wat ze leuk vinden om te lezen  
