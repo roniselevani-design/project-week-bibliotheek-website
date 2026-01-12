@@ -10,8 +10,6 @@ De app helpt jongeren om:
 - Te begrijpen hoe de bibliotheek werkt
 - Jongeren meer boeken te laten lezen
 
-De app is ontworpen **zonder inloggen**, zodat jongeren snel en laagdrempelig de bibliotheek kunnen gebruiken.
-
 ---
 
 ## 🎯 Doel van de app
