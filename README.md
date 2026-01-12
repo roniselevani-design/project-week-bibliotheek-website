@@ -59,7 +59,7 @@ Deze app maakt de bibliotheek:
 ## 🛠️ Gebruikte tools
 - Ontwerp: Figma
 - Ontwikkeling: *()*
-- Projectmanagement: Scrum
+- Projectmanagement: Trello
 - Versiebeheer: GitHub
 
 ---
