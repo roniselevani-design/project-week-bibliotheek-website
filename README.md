@@ -33,11 +33,11 @@ Deze app maakt de bibliotheek:
 ---
 
 ## 🧩 Functionaliteiten
-- Boeken zoeken (zonder perfecte spelling)
+- Boeken zoeken 
 - Filteren op:
   - Leeftijd
   - Genre
-  - Boekvorm (fysiek / e-book / luisterboek)
+  - Boekvorm 
 - Boekentips op basis van interesses
 - Overzicht populaire boeken onder jongeren
 - Uitleg over:
@@ -45,16 +45,7 @@ Deze app maakt de bibliotheek:
   - Kastkleuren
   - Waar manga staat
 - Informatie over bibliotheeklocaties
-- Online bibliotheek (e-books & luisterboeken)
-
----
-
-## 🚫 Geen inloggen
-De app werkt **zonder account of inloggen**.  
-Dit zorgt voor:
-- Snelle toegang
-- Minder drempels
-- Gebruiksvriendelijkheid voor jongeren
+- Online bibliotheek 
 
 ---
 
@@ -69,7 +60,7 @@ Dit zorgt voor:
 
 ## 🛠️ Gebruikte tools
 - Ontwerp: Figma
-- Ontwikkeling: *(vul hier jouw taal/framework in, bijv. Flutter / React Native / HTML & CSS)*
+- Ontwikkeling: *()*
 - Projectmanagement: Scrum
 - Versiebeheer: GitHub
 
@@ -96,9 +87,6 @@ De app is ontwikkeld op basis van user stories, zoals:
 ---
 
 ## 👤 Auteur
-Naam: *[jouw naam]*  
-Opleiding: *[opleiding]*  
-Klas: *[klas]*  
-Schooljaar: *[jaar]*
+Namen: *[Jayden, Roni, Koos en Ryan]*  
 
 ---
