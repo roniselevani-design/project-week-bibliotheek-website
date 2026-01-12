@@ -7,7 +7,8 @@ Dit project is een **mobiele app/computer website** voor de bibliotheek van Zoet
 De app helpt jongeren om:
 - Makkelijk boeken te vinden  
 - Te ontdekken wat ze leuk vinden om te lezen  
-- Te begrijpen hoe de bibliotheek werkt  
+- Te begrijpen hoe de bibliotheek werkt
+- Jongeren meer boeken te laten lezen
 
 De app is ontworpen **zonder inloggen**, zodat jongeren snel en laagdrempelig de bibliotheek kunnen gebruiken.
 
