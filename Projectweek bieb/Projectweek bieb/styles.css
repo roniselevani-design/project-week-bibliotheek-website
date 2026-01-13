@@ -1,4 +1,4 @@
-/* Basis reset */
+/* --- Algemene Reset & Basisinstellingen --- */
 * {
     margin: 0;
     padding: 0;
@@ -8,21 +8,21 @@
 
 body {
     background-color: white;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
 }
 
-/* --- 1. HEADER GEDEELTE --- */
+/* --- Header & Navigatie --- */
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-    /* Boven: 0 | Rechts: 40px | Onder: 10px | Links: 20px */
     padding: 0 40px 10px 20px; 
-    
     background-color: white;
 }
 
-/* Logo Stijlen */
+/* Logo en afbeelding instellingen */
 .logo-container img {
     height: 50px; 
     display: block;
@@ -34,12 +34,10 @@ header {
     font-size: 1.2rem;
 }
 
-/* Navigatie Links */
+/* Menu links opmaak */
 .nav-links {
     display: flex;
     gap: 30px;
-    
-    /* Correctie om de links optisch in het midden te krijgen */
     margin-top: 10px; 
 }
 
@@ -54,7 +52,7 @@ header {
     text-decoration: underline;
 }
 
-/* --- 2. DECORATIEVE VORM & SEARCHBAR --- */
+/* --- Hero Sectie (Bovenkant Pagina) --- */
 .hero-section {
     position: relative;
     width: 100%;
@@ -64,7 +62,7 @@ header {
     align-items: center;
 }
 
-/* De grijze puntige vorm */
+/* Grijze achtergrondvorm met clip-path */
 .decorative-bg {
     position: absolute;
     top: 0;
@@ -72,18 +70,17 @@ header {
     width: 100%;
     height: 100%;
     background-color: #e6e6e6;
-    /* Hiermee maken we de puntvorm */
     clip-path: polygon(0 0, 100% 0, 100% 40%, 50% 100%, 0 40%);
     z-index: 1;
 }
 
-/* De Zoekbalk */
+/* --- Zoekbalk Styling --- */
 .search-container {
     position: relative;
     z-index: 2;
     width: 60%;
     max-width: 600px;
-    margin-top: 80px; /* Schuift de balk op de juiste plek in de punt */
+    margin-top: 80px; 
 }
 
 .search-input {
@@ -100,3 +97,138 @@ header {
 .search-input::placeholder {
     color: black;
 }
+
+/* --- Informatie Blokken Grid --- */
+.blokken-container {
+    display: flex;            
+    justify-content: center;   
+    gap: 60px;                 
+    padding: 70px 20px;        
+    flex-wrap: wrap;           
+}
+
+/* Opmaak individuele groene kaarten */
+.info-blok {
+    background-color: #3aa846; 
+    width: 400px;             
+    height: 250px;             
+    border-radius: 12px;       
+    border: 1px solid #2e8b38; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+
+
+/* --- ISOLATIE & RESET --- */
+/* Dit zorgt dat padding/margins in deze module niet gek doen */
+.cl-wrapper * {
+    box-sizing: border-box;
+    font-family: sans-serif; /* Of je eigen font */
+}
+
+/* --- LAYOUT & CENTRERING --- */
+/* We gebruiken deze wrapper om te centreren, in plaats van de body */
+.cl-wrapper {
+    position: fixed; /* Zorgt dat het over je huidige content ligt (of relative als het in een div moet) */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Achtergrondkleur van het scherm */
+    z-index: 9999; /* Zorgt dat het bovenop ligt */
+}
+
+/* --- DE KAART --- */
+.cl-card {
+    background-color: white;
+    width: 350px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    /* De dikke blauwe rand */
+    border: 4px solid black; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* --- HEADER & LOGO --- */
+.cl-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.cl-title {
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #000;
+    margin: 0; /* Reset browser default margin */
+    line-height: 1;
+}
+
+.cl-logo-area {
+    /* Ruimte reserveren voor je logo zodat layout niet verspringt */
+    width: 60px;     
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Zorgt dat jouw afbeelding netjes past */
+.cl-logo-area img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* --- FORMULIER ELEMENTEN --- */
+.cl-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.cl-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.1rem;
+    color: #000;
+    background: #fff;
+    border: 1px solid #333;
+    border-radius: 2px;
+    outline: none;
+    margin: 0;
+}
+
+.cl-input:focus {
+    border-color: black; /* Focus kleur (optioneel) */
+}
+
+/* --- KNOPPEN --- */
+.cl-btn-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.cl-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #333;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #000;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin: 0;
+}
+
