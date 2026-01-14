@@ -1,0 +1,33 @@
+/* --- blokken.css --- */
+
+/* De container waar de blokken in zitten */
+.blokken-container {
+    display: flex;            
+    justify-content: center;   
+    gap: 60px;                 
+    padding: 70px 20px;        
+    flex-wrap: wrap;           
+}
+
+/* Opmaak van de individuele groene kaarten */
+.info-blok {
+    background-color: #3aa846; 
+    width: 400px;             
+    height: 250px;             
+    border-radius: 12px;       
+    border: 1px solid #2e8b38; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    
+    /* Zorgt dat de tekst (h1) er mooi in staat */
+    text-align: center;
+}
+
+/* Extra: Zorg dat de H1 in het blok er goed uitziet */
+.info-blok h1 {
+    font-size: 2rem;
+    margin: 0;
+}
