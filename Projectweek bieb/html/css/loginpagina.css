@@ -13,26 +13,26 @@
  
   background-color:white;
   top:130px;
-  
+  z-index: 10;
 }
 .E-mail{
-  position:fixed;
-  bottom: 340px;
-  left: 585px;
+  position:absolute;
+  bottom: 250px;
+  left: 20px;
   font-size: 25px;
   border: 2px solid black ;
 }
 .Wachtwoord{
-  position:fixed;
-  bottom: 290px;
-  left: 585px;
+  position:absolute;
+  bottom: 200px;
+  left: 20px;
   font-size: 25px;
   border: 2px solid black ;
 }
 .Login{
-  position:fixed;
-  bottom: 240px;
-  left: 585px;
+  position:absolute;
+  bottom: 150px;
+  left: 40px;
   font-size: 25px;
   border-radius: 8px;
   background-color: white;
@@ -40,9 +40,9 @@
 }
 .Registreren{
   
-  position:fixed;
-  bottom: 240px;
-  left: 700px;
+  position:absolute;
+  bottom: 150px;
+  left: 140px;
   font-size: 25px;
   border-radius: 8px;
   background-color: white;
@@ -53,11 +53,13 @@
   top: 30px;
   left: 60px;
   border-radius: 100px;
+  z-index: 10;
 }
 .Logo {
-  position: fixed;
-  bottom: 430px;
-  left: 750px;
+  position: absolute;
+  bottom: 380px;
+  left: 185px;
   height: 100px;
   width: 150px;
+  z-index: 10;
 }
