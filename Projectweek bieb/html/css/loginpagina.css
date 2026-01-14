@@ -21,6 +21,7 @@
   left: 20px;
   font-size: 25px;
   border: 2px solid black ;
+  border-radius: 5px;
 }
 .Wachtwoord{
   position:absolute;
@@ -28,11 +29,12 @@
   left: 20px;
   font-size: 25px;
   border: 2px solid black ;
+  border-radius: 5px;
 }
 .Login{
   position:absolute;
   bottom: 150px;
-  left: 40px;
+  left: 20px;
   font-size: 25px;
   border-radius: 8px;
   background-color: white;
@@ -42,7 +44,7 @@
   
   position:absolute;
   bottom: 150px;
-  left: 140px;
+  left: 120px;
   font-size: 25px;
   border-radius: 8px;
   background-color: white;
