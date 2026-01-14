@@ -1,0 +1,63 @@
+.Inloggen { 
+  font-size: 55px;
+  height: 500px;
+  width: 350px;
+  position: absolute;
+  bottom: 430px; 
+  left: 560px;
+  border-color:green; 
+  border-radius:15px;
+  border: 4px solid #333;      
+  padding: 10px 20px;        
+  display:inline-block;       
+ 
+  background-color:white;
+  top:130px;
+  
+}
+.E-mail{
+  position:fixed;
+  bottom: 340px;
+  left: 585px;
+  font-size: 25px;
+  border: 2px solid black ;
+}
+.Wachtwoord{
+  position:fixed;
+  bottom: 290px;
+  left: 585px;
+  font-size: 25px;
+  border: 2px solid black ;
+}
+.Login{
+  position:fixed;
+  bottom: 240px;
+  left: 585px;
+  font-size: 25px;
+  border-radius: 8px;
+  background-color: white;
+  border: 2px solid black;
+}
+.Registreren{
+  
+  position:fixed;
+  bottom: 240px;
+  left: 700px;
+  font-size: 25px;
+  border-radius: 8px;
+  background-color: white;
+  border: 2px solid black;
+}
+.Login-text {
+  position: relative;
+  top: 30px;
+  left: 60px;
+  border-radius: 100px;
+}
+.Logo {
+  position: fixed;
+  bottom: 430px;
+  left: 750px;
+  height: 100px;
+  width: 150px;
+}
