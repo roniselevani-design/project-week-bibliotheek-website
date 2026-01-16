@@ -5,7 +5,7 @@ include 'db_connect.php';
 $sql = "SELECT * FROM boeken WHERE 1=1";
 $params = [];
 
-// 2. FILTER LOGICA (Als er op een filter is geklikt)
+// 2. FILTER LOGICA
 
 // Zoekbalk
 if (!empty($_GET['search'])) {
@@ -13,15 +13,24 @@ if (!empty($_GET['search'])) {
     $params[] = "%" . $_GET['search'] . "%";
 }
 
-// Genre filter
+// Genre filter (AND logica)
 if (!empty($_GET['genre'])) {
-    $sql .= " AND genre = ?";
-    $params[] = $_GET['genre'];
+    $gekozenGenres = (array)$_GET['genre'];
+    
+    $genreQueryParts = [];
+    foreach ($gekozenGenres as $genre) {
+        $genreQueryParts[] = "genre LIKE ?";
+        $params[] = "%" . $genre . "%";
+    }
+    
+    if (count($genreQueryParts) > 0) {
+        $sql .= " AND (" . implode(" AND ", $genreQueryParts) . ")";
+    }
 }
 
-// Soort filter (E-book / Boek)
+// Soort filter (Aangepast met TRIM om onzichtbare spaties te negeren)
 if (!empty($_GET['soort'])) {
-    $sql .= " AND soort = ?";
+    $sql .= " AND TRIM(soort) = ?";
     $params[] = $_GET['soort'];
 }
 
@@ -36,22 +45,22 @@ $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <title>Bibliotheek Zoeken</title>
-        <link rel="stylesheet" href="css/boeken.css
-
-        ">
-                <link rel="stylesheet" href="css/header.css">
-    </head>
+    <link rel="stylesheet" href="css/boeken.css">
+    <link rel="stylesheet" href="css/header.css">
+</head>
 <body>
+
 <header>
     <div class="logo-container">
         <a href="index.html">
-            <div class="logo-placeholder"><img src="fotos/zoetermeer-logo.png" alt="Logo Zoetermeer"></div>
+            <div class="logo-placeholder">
+                <img src="fotos/zoetermeer-logo.png" alt="Logo Zoetermeer">
+            </div>
         </a>
     </div>
 
@@ -72,6 +81,7 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 class="search-input" 
                 placeholder="Zoek op titel..." 
                 value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                autocomplete="off"
             >
         </form>
     </div>
@@ -90,23 +100,65 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="filter-group">
                 <h4>Soort boek</h4>
-                <label><input type="radio" name="soort" value="E-book" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'E-book') echo 'checked'; ?>> E-Boeken</label>
-                <label><input type="radio" name="soort" value="Hardcover" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'Hardcover') echo 'checked'; ?>> Boeken</label>
+                
+                <label>
+                    <input type="radio" name="soort" value="e-book" 
+                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'e-book') echo 'checked'; ?>> 
+                    E-Boeken
+                </label>
+                
+                <label>
+                    <input type="radio" name="soort" value="boeken" 
+                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'boeken') echo 'checked'; ?>> 
+                    Boeken
+                </label>
+                
+                <label>
+                    <input type="radio" name="soort" value="manga" 
+                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'manga') echo 'checked'; ?>> 
+                    Manga
+                </label>
+                
+                <label>
+                    <input type="radio" name="soort" value="stripboeken" 
+                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'stripboeken') echo 'checked'; ?>> 
+                    Stripboeken
+                </label>
             </div>
 
             <div class="filter-group">
-                <h4>Genre</h4>
-                <label><input type="radio" name="genre" value="Drama" <?php if(isset($_GET['genre']) && $_GET['genre'] == 'Drama') echo 'checked'; ?>> Drama</label>
-                <label><input type="radio" name="genre" value="Horror" <?php if(isset($_GET['genre']) && $_GET['genre'] == 'Horror') echo 'checked'; ?>> Horror</label>
-                <label><input type="radio" name="genre" value="Thriller" <?php if(isset($_GET['genre']) && $_GET['genre'] == 'Thriller') echo 'checked'; ?>> Thriller</label>
-                <label><input type="radio" name="genre" value="Fantasy" <?php if(isset($_GET['genre']) && $_GET['genre'] == 'Fantasy') echo 'checked'; ?>> Fantasy</label>
-                <label><input type="radio" name="genre" value="Avontuur" <?php if(isset($_GET['genre']) && $_GET['genre'] == 'Avontuur') echo 'checked'; ?>> Avontuur</label>
+                <h4>Genre (Meerdere mogelijk)</h4>
+                <?php
+                    function isGenreChecked($val) {
+                        if (isset($_GET['genre']) && is_array($_GET['genre'])) {
+                            return in_array($val, $_GET['genre']) ? 'checked' : '';
+                        }
+                        return '';
+                    }
+                ?>
+                <label><input type="checkbox" name="genre[]" value="Drama" <?php echo isGenreChecked('Drama'); ?>> Drama</label>
+                <label><input type="checkbox" name="genre[]" value="Horror" <?php echo isGenreChecked('Horror'); ?>> Horror</label>
+                <label><input type="checkbox" name="genre[]" value="Thriller" <?php echo isGenreChecked('Thriller'); ?>> Thriller</label>
+                <label><input type="checkbox" name="genre[]" value="Fantasy" <?php echo isGenreChecked('Fantasy'); ?>> Fantasy</label>
+                <label><input type="checkbox" name="genre[]" value="Avontuur" <?php echo isGenreChecked('Avontuur'); ?>> Avontuur</label>
+                <label><input type="checkbox" name="genre[]" value="Fictie" <?php echo isGenreChecked('Fictie'); ?>> Fictie</label>
+                <label><input type="checkbox" name="genre[]" value="Non-fictie" <?php echo isGenreChecked('Non-fictie'); ?>> Non-fictie</label>
+                <label><input type="checkbox" name="genre[]" value="Romantiek" <?php echo isGenreChecked('Romantiek'); ?>> Romantiek</label>
+                <label><input type="checkbox" name="genre[]" value="Actie" <?php echo isGenreChecked('Actie'); ?>> Actie</label>
             </div>
 
             <div class="filter-group">
                 <h4>Taal</h4>
-                <label><input type="radio" name="taal" value="Nederlands" <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Nederlands') echo 'checked'; ?>> Nederlands</label>
-                <label><input type="radio" name="taal" value="Engels" <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Engels') echo 'checked'; ?>> Engels</label>
+                <label>
+                    <input type="radio" name="taal" value="Nederlands" 
+                    <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Nederlands') echo 'checked'; ?>> 
+                    Nederlands
+                </label>
+                <label>
+                    <input type="radio" name="taal" value="Engels" 
+                    <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Engels') echo 'checked'; ?>> 
+                    Engels
+                </label>
             </div>
 
             <a href="index.php" class="reset-btn">Filters wissen</a>
@@ -115,54 +167,51 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <main class="results">
         <?php 
-        if (isset($boeken) && count($boeken) > 0) {
+        if (!empty($boeken)) {
             foreach ($boeken as $boek) { 
         ?>
             <div class="boek-kaart">
                 <div class="boek-img">
-                    <img src="img/<?php echo $boek['Foto']; ?>" alt="<?php echo $boek['Naam']; ?>">
+                    <img src="img/<?php echo htmlspecialchars($boek['Foto']); ?>" alt="<?php echo htmlspecialchars($boek['Naam']); ?>">
                 </div>
                 <div class="boek-info">
                     <div class="titel-row">
-                        <h2><?php echo $boek['Naam']; ?></h2>
+                        <h2><?php echo htmlspecialchars($boek['Naam']); ?></h2>
                         <div class="sterren">
                             <?php 
-                            for($i=0; $i<$boek['Sterren']; $i++) { echo "★"; } 
-                            for($i=$boek['Sterren']; $i<5; $i++) { echo "<span style='color:#ccc'>★</span>"; }
+                            $aantalSterren = $boek['Sterren'];
+                            for($i=0; $i<$aantalSterren; $i++) { echo "★"; } 
+                            for($i=$aantalSterren; $i<5; $i++) { echo "<span style='color:#ccc'>★</span>"; }
                             ?>
                         </div>
                     </div>
-                    <p class="auteur"><?php echo $boek['Schrijver']; ?></p>
-                    <p class="beschrijving">
-                        <?php echo $boek['Informatie']; ?>
+                    <p class="auteur" style="color:#d35400; font-size: 0.9em; font-weight:bold;">
+                        <?php echo htmlspecialchars($boek['Genre']); ?>
                     </p>
-                    
+                    <p class="auteur"><?php echo htmlspecialchars($boek['Schrijver']); ?></p>
+                    <p class="beschrijving"><?php echo htmlspecialchars($boek['Informatie']); ?></p>
                     <div class="knoppen">
                         <button class="btn-wit">Opslaan</button>
                         <button class="btn-wit">Reserveren</button>
                     </div>
                 </div>
             </div>
-            <?php 
+        <?php 
             } 
         } else {
-            echo "<p>Geen boeken gevonden met deze filters.</p>";
+            echo "<p>Geen boeken gevonden die aan al je eisen voldoen.</p>";
         }
         ?>
     </main>
 </div>
 
 <script>
-    // Zoek het formulier
     const filterForm = document.getElementById('filterForm');
-    
-    // Zoek alle radio buttons binnen het formulier
-    const radioButtons = filterForm.querySelectorAll('input[type="radio"]');
+    const inputs = filterForm.querySelectorAll('input');
 
-    // Voeg aan elke knop een actie toe
-    radioButtons.forEach(radio => {
-        radio.addEventListener('change', () => {
-            filterForm.submit(); // Verstuur het formulier zodra er een wijziging is
+    inputs.forEach(input => {
+        input.addEventListener('change', () => {
+            filterForm.submit(); 
         });
     });
 </script>
