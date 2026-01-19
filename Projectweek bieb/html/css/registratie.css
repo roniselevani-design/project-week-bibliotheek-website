@@ -1,4 +1,4 @@
-.Inloggen { 
+.Registreren-container { 
   font-size: 55px;
   height: 500px;
   width: 350px;
@@ -24,40 +24,56 @@
 }
 .Wachtwoord{
   position:absolute;
-  bottom: 235px;
+  bottom: 200px;
   left: 20px;
   font-size: 25px;
   border: 2px solid black ;
   border-radius: 5px;
 }
-.Login{
+.Naam{
   position:absolute;
-  bottom: 180px;
+  bottom: 350px;
+  left: 20px;
+  font-size: 25px;
+  border: 2px solid black ;
+  border-radius: 5px;
+}
+.Telefoonnummer{
+  position:absolute;
+  bottom: 250px;
+  left: 20px;
+  font-size: 25px;
+  border: 2px solid black ;
+  border-radius: 5px;
+}
+.Registreren-btn{
+  position:absolute;
+  bottom: 150px;
   left: 20px;
   font-size: 25px;
   border-radius: 8px;
   background-color: white;
   border: 2px solid black;
 }
-.Login-text {
-  position: relative;
+.Registreren-text {
+  position: absolute;
   top: 30px;
   left: 60px;
   border-radius: 100px;
   z-index: 10;
-  font-size: 40px;
+  font-size: 40px; 
 }
 .Logo {
   position: absolute;
   bottom: 380px;
-  left: 185px;
+  left: 225px;
   height: 100px;
   width: 150px;
   z-index: 10;
 }
-.registratie-link {
+.login-link {
   position: absolute;
-  bottom: 155px;
+  bottom: 125px;
   left: 587px;
   font-size: 16px;
   z-index:11;
