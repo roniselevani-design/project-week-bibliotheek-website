@@ -1,3 +1,14 @@
+/* --- Algemene Reset (Voor alle pagina's) --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Dit zorgt dat de zoekbalk niet uitsteekt */
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: white;
+}
 /* --- header.css --- */
 /* Bevat: Logo, Navigatie, Grijze achtergrond & Zoekbalk */
 
