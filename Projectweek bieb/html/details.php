@@ -90,8 +90,50 @@ if (isset($_GET['id'])) {
 
             <div class="col-location">
                 <div class="map-box">
-                    <span>Locatie hier</span>
-                </div>
+    <div class="plattegrond-grid">
+        <?php
+        // 1. Haal de locatie op. LET OP: kleine letter 'l' bij ['locatie']
+        $locatieString = isset($boek['locatie']) ? $boek['locatie'] : ''; 
+        
+        $doelX = 0;
+        $doelY = 0;
+
+        // Splits "15,15" op in x=15 en y=15
+        if (!empty($locatieString) && strpos($locatieString, ',') !== false) {
+            $coords = explode(',', $locatieString);
+            // intval zorgt dat het een nummer wordt, trim haalt spaties weg
+            if(count($coords) >= 2) {
+                $doelX = intval(trim($coords[0])); 
+                $doelY = intval(trim($coords[1])); 
+            }
+        }
+
+        // 2. Maak het 18x18 rooster
+        for ($y = 1; $y <= 18; $y++) {
+            for ($x = 1; $x <= 18; $x++) {
+                
+                $classes = "vakje"; 
+                
+                // A. IS DIT HET BOEK? (Check of x en y overeenkomen met database)
+                if ($x == $doelX && $y == $doelY) {
+                    $classes .= " boek-locatie";
+                } 
+                // B. IS DIT EEN BOEKENKAST? (Alleen op specifieke rijen)
+                elseif (($y % 4 == 3) && ($x != 5 && $x != 14)) { 
+                    $classes .= " boekenkast";
+                } 
+                // C. ANDERS IS HET VLOER
+                else {
+                    $classes .= " vloer";
+                }
+
+                // Print het vakje
+                echo "<div class='$classes'></div>";
+            }
+        }
+        ?>
+    </div>
+</div>
                 
                 <div class="status-box">
                     <?php 

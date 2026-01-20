@@ -6,7 +6,7 @@ body {
     background-color: #fff;
 }
 
-/* --- OVERLAP --- */
+/* --- OVERLAP & HEADER --- */
 .page-overlap-wrapper {
     max-width: 1200px;
     margin: 0 auto;
@@ -33,14 +33,14 @@ body {
     background-color: #f0f0f0;
 }
 
-/* --- 3 KOLOMMEN --- */
+/* --- 3 KOLOMMEN LAYOUT --- */
 .three-column-grid {
     display: flex;
     gap: 50px;
     align-items: flex-start;
 }
 
-/* BLOK 1 */
+/* KOLOM 1: Plaatje + Knoppen */
 .col-visual {
     flex: 0 0 260px;
     display: flex;
@@ -74,7 +74,7 @@ body {
     background: #eee;
 }
 
-/* BLOK 2 */
+/* KOLOM 2: Tekst & Info */
 .col-text {
     flex: 1;
     background-color: transparent;
@@ -107,23 +107,79 @@ body {
     color: #333;
 }
 
-/* BLOK 3 */
+/* KOLOM 3: Locatie & Kaart */
 .col-location {
     flex: 0 0 300px;
 }
 
+/* --- DE PLATTEGROND (MAP-BOX) --- */
 .map-box {
     width: 100%;
-    height: 250px;
-    background-color: #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #666;
-    font-weight: bold;
+    /* Zorg dat het vak vierkant blijft */
+    aspect-ratio: 1 / 1; 
+    
+    /* GEEN padding, vult het hele vak */
+    padding: 0; 
+    
+    background-color: white;
     border: 1px solid #ccc;
+    
+    /* Zorgt dat inhoud niet buiten de randen komt */
+    overflow: hidden; 
+    display: block; /* Zorgt dat hij de hele breedte pakt */
 }
 
+/* HET ROOSTER (18x18) */
+.plattegrond-grid {
+    display: grid;
+    /* 18 kolommen en 18 rijen */
+    grid-template-columns: repeat(18, 1fr);
+    grid-template-rows: repeat(18, 1fr);
+    
+    /* Klein lijntje tussen vakjes (optioneel, zet op 0px voor strakke blokken) */
+    gap: 1px; 
+    
+    /* VUL DE HELE MAP-BOX */
+    width: 100%;
+    height: 100%;
+    
+    background-color: #fff;
+}
+
+/* BASIS VAKJE */
+.vakje {
+    width: 100%;
+    height: 100%;
+}
+
+/* 1. Vloer */
+.vakje.vloer {
+    background-color: #f4f4f4; /* Lichtgrijs */
+}
+
+/* 2. Boekenkasten */
+.vakje.boekenkast {
+    background-color: #555; /* Donkergrijs */
+}
+
+/* 3. LOCATIE BOEK (ORANJE) */
+.vakje.boek-locatie {
+    background-color: #ff9f43 !important; /* Forceer oranje kleur */
+    
+    /* Geen rand of schaduw als het strak in het grid moet, 
+       maar mag wel om op te vallen: */
+    z-index: 10;
+    animation: knipperen 1.5s infinite;
+}
+
+/* Animatie */
+@keyframes knipperen {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* --- STATUS BOX (Onder de kaart) --- */
 .status-box {
     display: flex;
     background: white;
@@ -131,7 +187,6 @@ body {
     border-top: none; 
 }
 
-/* De algemene stijl voor het vakje */
 .status-box .check {
     padding: 10px 15px;
     border-right: 1px solid #ccc;
@@ -141,15 +196,14 @@ body {
     gap: 5px;
 }
 
-/* KLEUREN VOOR AANWEZIG/AFWEZIG */
 .status-box .check.available {
-    color: #27ae60; /* Mooi groen */
-    background-color: #eafaf1; /* Heel licht groen achtergrondje (optioneel) */
+    color: #27ae60; 
+    background-color: #eafaf1; 
 }
 
 .status-box .check.unavailable {
-    color: #c0392b; /* Mooi rood */
-    background-color: #fdedec; /* Heel licht rood achtergrondje (optioneel) */
+    color: #c0392b; 
+    background-color: #fdedec; 
 }
 
 .status-box .lib {
@@ -159,7 +213,7 @@ body {
     color: #333;
 }
 
-/* RESPONSIVE */
+/* --- RESPONSIVE --- */
 @media (max-width: 1000px) {
     .three-column-grid {
         flex-direction: column;
