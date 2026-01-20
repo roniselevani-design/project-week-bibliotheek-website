@@ -13,22 +13,20 @@ if (!empty($_GET['search'])) {
     $params[] = "%" . $_GET['search'] . "%";
 }
 
-// Genre filter (AND logica)
+// Genre filter
 if (!empty($_GET['genre'])) {
     $gekozenGenres = (array)$_GET['genre'];
-    
     $genreQueryParts = [];
     foreach ($gekozenGenres as $genre) {
         $genreQueryParts[] = "genre LIKE ?";
         $params[] = "%" . $genre . "%";
     }
-    
     if (count($genreQueryParts) > 0) {
         $sql .= " AND (" . implode(" AND ", $genreQueryParts) . ")";
     }
 }
 
-// Soort filter (Aangepast met TRIM om onzichtbare spaties te negeren)
+// Soort filter
 if (!empty($_GET['soort'])) {
     $sql .= " AND TRIM(soort) = ?";
     $params[] = $_GET['soort'];
@@ -51,79 +49,67 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <title>Bibliotheek Zoeken</title>
     <link rel="stylesheet" href="css/boeken.css">
-    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/header.css"> 
+    <style>
+        /* Zorgt voor het handje als je over een boek gaat */
+        .boek-kaart {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .boek-kaart:hover {
+            transform: scale(1.02);
+        }
+    </style>
 </head>
 <body>
 
-<header>
-    <div class="logo-container">
-        <a href="index.html">
-            <div class="logo-placeholder">
-                <img src="fotos/zoetermeer-logo.png" alt="Logo Zoetermeer">
-            </div>
-        </a>
-    </div>
+    <header>
+        <div class="logo-container">
+            <a href="index.html">
+                <div class="logo-placeholder">
+                    <img src="fotos/zoetermeer-logo.png" alt="Logo">
+                </div>
+            </a>
+        </div>
 
-    <nav class="nav-links">
-        <a href="index.php">Boeken</a>
-        <a href="loginPagina.html">Inloggen</a>
-    </nav>
-</header>
+        <nav class="nav-links">
+            <a href="index.php">Boeken</a>
+            <a href="loginPagina.html">Inloggen</a>
+        </nav>
+    </header>
 
-<section class="hero-section">
-    <div class="decorative-bg"></div>
-    
-    <div class="search-container">
-        <form action="index.php" method="GET">
-            <input 
-                type="text" 
-                name="search" 
-                class="search-input" 
-                placeholder="Zoek op titel..." 
-                value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
-                autocomplete="off"
-            >
-        </form>
-    </div>
-</section>
+    <section class="hero-section">
+        <div class="decorative-bg"></div>
+        
+        <div class="search-container">
+            <form action="index.php" method="GET">
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="search-input" 
+                    placeholder="Zoeken"
+                    autocomplete="off"
+                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                >
+            </form>
+        </div>
+    </section>
 
 <div class="main-layout">
     
     <aside class="sidebar">
         <h3>Filter</h3>
-        
         <form action="index.php" method="GET" id="filterForm">
-            
             <?php if(!empty($_GET['search'])): ?>
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
             <?php endif; ?>
 
             <div class="filter-group">
                 <h4>Soort boek</h4>
-                
-                <label>
-                    <input type="radio" name="soort" value="e-book" 
-                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'e-book') echo 'checked'; ?>> 
-                    E-Boeken
-                </label>
-                
-                <label>
-                    <input type="radio" name="soort" value="boeken" 
-                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'boeken') echo 'checked'; ?>> 
-                    Boeken
-                </label>
-                
-                <label>
-                    <input type="radio" name="soort" value="manga" 
-                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'manga') echo 'checked'; ?>> 
-                    Manga
-                </label>
-                
-                <label>
-                    <input type="radio" name="soort" value="stripboeken" 
-                    <?php if(isset($_GET['soort']) && $_GET['soort'] == 'stripboeken') echo 'checked'; ?>> 
-                    Stripboeken
-                </label>
+                <label><input type="radio" name="soort" value="e-book" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'e-book') echo 'checked'; ?>> E-Boeken</label>
+                <label><input type="radio" name="soort" value="boeken" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'boeken') echo 'checked'; ?>> Boeken</label>
+                <label><input type="radio" name="soort" value="manga" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'manga') echo 'checked'; ?>> Manga</label>
+                <label><input type="radio" name="soort" value="stripboeken" <?php if(isset($_GET['soort']) && $_GET['soort'] == 'stripboeken') echo 'checked'; ?>> Stripboeken</label>
             </div>
 
             <div class="filter-group">
@@ -149,16 +135,8 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <div class="filter-group">
                 <h4>Taal</h4>
-                <label>
-                    <input type="radio" name="taal" value="Nederlands" 
-                    <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Nederlands') echo 'checked'; ?>> 
-                    Nederlands
-                </label>
-                <label>
-                    <input type="radio" name="taal" value="Engels" 
-                    <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Engels') echo 'checked'; ?>> 
-                    Engels
-                </label>
+                <label><input type="radio" name="taal" value="Nederlands" <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Nederlands') echo 'checked'; ?>> Nederlands</label>
+                <label><input type="radio" name="taal" value="Engels" <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Engels') echo 'checked'; ?>> Engels</label>
             </div>
 
             <a href="index.php" class="reset-btn">Filters wissen</a>
@@ -169,8 +147,10 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php 
         if (!empty($boeken)) {
             foreach ($boeken as $boek) { 
+                // Check of de database 'ID' of 'id' gebruikt
+                $boekId = isset($boek['ID']) ? $boek['ID'] : (isset($boek['id']) ? $boek['id'] : '');
         ?>
-            <div class="boek-kaart">
+            <div class="boek-kaart" onclick="window.location.href='details.php?id=<?php echo $boekId; ?>'">
                 <div class="boek-img">
                     <img src="img/<?php echo htmlspecialchars($boek['Foto']); ?>" alt="<?php echo htmlspecialchars($boek['Naam']); ?>">
                 </div>
@@ -191,8 +171,8 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <p class="auteur"><?php echo htmlspecialchars($boek['Schrijver']); ?></p>
                     <p class="beschrijving"><?php echo htmlspecialchars($boek['Informatie']); ?></p>
                     <div class="knoppen">
-                        <button class="btn-wit">Opslaan</button>
-                        <button class="btn-wit">Reserveren</button>
+                        <button class="btn-wit" onclick="event.stopPropagation()">Opslaan</button>
+                        <button class="btn-wit" onclick="event.stopPropagation()">Reserveren</button>
                     </div>
                 </div>
             </div>
@@ -208,11 +188,8 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <script>
     const filterForm = document.getElementById('filterForm');
     const inputs = filterForm.querySelectorAll('input');
-
     inputs.forEach(input => {
-        input.addEventListener('change', () => {
-            filterForm.submit(); 
-        });
+        input.addEventListener('change', () => { filterForm.submit(); });
     });
 </script>
 
