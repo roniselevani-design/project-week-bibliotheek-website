@@ -8,10 +8,7 @@ $params = [];
 // 2. FILTER LOGICA
 
 // Zoekbalk
-if (!empty($_GET['search'])) {
-    $sql .= " AND naam LIKE ?";
-    $params[] = "%" . $_GET['search'] . "%";
-}
+
 
 // Genre filter (AND logica)
 if (!empty($_GET['genre'])) {
@@ -44,6 +41,46 @@ if (!empty($_GET['taal'])) {
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// FUZZY SEARCH
+if ($searchTerm) {
+    $filtered = [];
+
+    foreach ($boeken as $boek) {
+        $velden = [
+            $boek['Naam'],
+            $boek['Schrijver'],
+            $boek['Genre']
+        ];
+
+        $besteScore = 0;
+
+        foreach ($velden as $veld) {
+            similar_text(
+                strtolower($searchTerm),
+                strtolower($veld),
+                $percentage
+            );
+
+            // Hogere drempel voor precisie
+            if ($percentage > $besteScore) {
+                $besteScore = $percentage;
+            }
+        }
+
+        // Minimale overeenkomst verhogen
+        if ($besteScore >= 85) {
+            $boek['match_score'] = $besteScore;
+            $filtered[] = $boek;
+        }
+    }
+
+    // Sorteer op beste match
+    usort($filtered, function($a, $b) {
+        return $b['match_score'] <=> $a['match_score'];
+    });
+
+    $boeken = $filtered;
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
