@@ -1,20 +1,21 @@
 <?php
-session_start();
 include 'db_connect.php';
 
 // Controleer ID
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+    
+    // Check of je kolom 'id' of 'ID' heet in de DB
     $stmt = $conn->prepare("SELECT * FROM boeken WHERE ID = ?"); 
     $stmt->execute([$id]);
     $boek = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$boek) {
-        header("Location: boeken.php"); // Aangepast naar boeken.php
+        header("Location: index.php");
         exit();
     }
 } else {
-    header("Location: boeken.php"); // Aangepast naar boeken.php
+    header("Location: index.php");
     exit();
 }
 ?>
@@ -36,15 +37,10 @@ if (isset($_GET['id'])) {
                 </div>
             </a>
         </div>
-<nav class="nav-links">
-    <a href="boeken.php">Boeken</a>
-    
-    <?php if(isset($_SESSION['naam'])): ?>
-        <a href="uitloggen.php">Uitloggen</a> 
-    <?php else: ?>
-        <a href="loginPagina.html">Inloggen</a>
-    <?php endif; ?>
-</nav>
+        <nav class="nav-links">
+            <a href="index.php">Boeken</a>
+            <a href="loginPagina.html">Inloggen</a>
+        </nav>
     </header>
 
     <section class="hero-section">
@@ -53,7 +49,7 @@ if (isset($_GET['id'])) {
 
     <div class="page-overlap-wrapper">
         
-        <a href="boeken.php" class="back-btn">← Terug naar zoekresultaten</a>
+        <a href="index.php" class="back-btn">← Terug naar zoekresultaten</a>
 
         <div class="three-column-grid">
             
@@ -96,27 +92,42 @@ if (isset($_GET['id'])) {
                 <div class="map-box">
     <div class="plattegrond-grid">
         <?php
+        // 1. Haal de locatie op. LET OP: kleine letter 'l' bij ['locatie']
         $locatieString = isset($boek['locatie']) ? $boek['locatie'] : ''; 
-        $doelX = 0; $doelY = 0;
+        
+        $doelX = 0;
+        $doelY = 0;
 
+        // Splits "15,15" op in x=15 en y=15
         if (!empty($locatieString) && strpos($locatieString, ',') !== false) {
             $coords = explode(',', $locatieString);
+            // intval zorgt dat het een nummer wordt, trim haalt spaties weg
             if(count($coords) >= 2) {
                 $doelX = intval(trim($coords[0])); 
                 $doelY = intval(trim($coords[1])); 
             }
         }
 
+        // 2. Maak het 18x18 rooster
         for ($y = 1; $y <= 18; $y++) {
             for ($x = 1; $x <= 18; $x++) {
+                
                 $classes = "vakje"; 
+                
+                // A. IS DIT HET BOEK? (Check of x en y overeenkomen met database)
                 if ($x == $doelX && $y == $doelY) {
                     $classes .= " boek-locatie";
-                } elseif (($y % 4 == 3) && ($x != 5 && $x != 14)) { 
+                } 
+                // B. IS DIT EEN BOEKENKAST? (Alleen op specifieke rijen)
+                elseif (($y % 4 == 3) && ($x != 5 && $x != 14)) { 
                     $classes .= " boekenkast";
-                } else {
+                } 
+                // C. ANDERS IS HET VLOER
+                else {
                     $classes .= " vloer";
                 }
+
+                // Print het vakje
                 echo "<div class='$classes'></div>";
             }
         }
@@ -126,17 +137,21 @@ if (isset($_GET['id'])) {
                 
                 <div class="status-box">
                     <?php 
+                        // Hier controleren we de waarde in de database
+                        // 1 = aanwezig (groen), 0 = afwezig (rood)
                         if ($boek['aanwezig'] == 1) {
                             $statusClass = "available";
                             $statusText = "✔ aanwezig";
                         } else {
                             $statusClass = "unavailable";
-                            $statusText = "✖ afwezig";
+                            $statusText = "✖ afwezig"; // Of 'uitgeleend'
                         }
                     ?>
+                    
                     <span class="check <?php echo $statusClass; ?>">
                         <?php echo $statusText; ?>
                     </span>
+                    
                     <span class="lib">Bibliotheek Gouda</span>
                 </div>
             </div>
