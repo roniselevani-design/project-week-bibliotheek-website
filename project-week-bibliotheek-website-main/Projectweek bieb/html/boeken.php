@@ -1,4 +1,5 @@
 <?php
+session_start(); // Sessie starten
 include 'db_connect.php';
 
 // 1. SEARCH VARIABELE DEFINIËREN
@@ -10,11 +11,9 @@ $params = [];
 
 // 3. FILTER LOGICA
 
-// --- ZOEKBALK (Nieuw: Zoeken via SQL) ---
+// --- ZOEKBALK ---
 if (!empty($searchTerm)) {
-    // Zoek in Naam, Schrijver OF Genre
     $sql .= " AND (Naam LIKE ? OR Schrijver LIKE ? OR Genre LIKE ?)";
-    // De % tekens betekenen "alles eromheen mag anders zijn"
     $params[] = "%" . $searchTerm . "%";
     $params[] = "%" . $searchTerm . "%";
     $params[] = "%" . $searchTerm . "%";
@@ -49,8 +48,6 @@ if (!empty($_GET['taal'])) {
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// (Het PHP Fuzzy Search blok is hier verwijderd omdat SQL dit nu doet)
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -60,7 +57,6 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="css/boeken.css">
     <link rel="stylesheet" href="css/header.css"> 
     <style>
-        /* Zorgt voor het handje als je over een boek gaat */
         .boek-kaart {
             cursor: pointer;
             transition: transform 0.2s;
@@ -74,24 +70,36 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <header>
         <div class="logo-container">
-            <a href="index.html">
+            <a href="index.php">
                 <div class="logo-placeholder">
                     <img src="fotos/zoetermeer-logo.png" alt="Logo">
                 </div>
             </a>
         </div>
 
-        <nav class="nav-links">
-            <a href="index.php">Boeken</a>
-            <a href="loginPagina.html">Inloggen</a>
-        </nav>
+<nav class="nav-links">
+    <a href="boeken.php">Boeken</a>
+    
+    <?php if(isset($_SESSION['naam'])): ?>
+        <a href="uitloggen.php">Uitloggen</a> 
+    <?php else: ?>
+        <a href="loginPagina.html">Inloggen</a>
+    <?php endif; ?>
+</nav>
     </header>
 
     <section class="hero-section">
         <div class="decorative-bg"></div>
         
         <div class="search-container">
-            <form action="index.php" method="GET">
+            
+            <?php if (isset($_SESSION['naam'])): ?>
+                <h1 style="text-align: center; margin-bottom: 15px; color: #d35400; font-size: 2rem;">
+                    Welkom, <?php echo htmlspecialchars($_SESSION['naam']); ?>!
+                </h1>
+            <?php endif; ?>
+            
+            <form action="boeken.php" method="GET">
                 <input 
                     type="text" 
                     name="search" 
@@ -108,7 +116,7 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     <aside class="sidebar">
         <h3>Filter</h3>
-        <form action="index.php" method="GET" id="filterForm">
+        <form action="boeken.php" method="GET" id="filterForm">
             <?php if(!empty($searchTerm)): ?>
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>">
             <?php endif; ?>
@@ -148,7 +156,7 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <label><input type="radio" name="taal" value="Engels" <?php if(isset($_GET['taal']) && $_GET['taal'] == 'Engels') echo 'checked'; ?>> Engels</label>
             </div>
 
-            <a href="index.php" class="reset-btn">Filters wissen</a>
+            <a href="boeken.php" class="reset-btn">Filters wissen</a>
         </form>
     </aside>
 
@@ -156,7 +164,6 @@ $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php 
         if (!empty($boeken)) {
             foreach ($boeken as $boek) { 
-                // Check of de database 'ID' of 'id' gebruikt
                 $boekId = isset($boek['ID']) ? $boek['ID'] : (isset($boek['id']) ? $boek['id'] : '');
         ?>
             <div class="boek-kaart" onclick="window.location.href='details.php?id=<?php echo $boekId; ?>'">
