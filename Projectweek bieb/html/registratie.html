@@ -1,45 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <title>Registreren</title>
-
-
     <link rel="stylesheet" href="css/header.css">
-        <link rel="stylesheet" href="css/registratie.css">
+    <link rel="stylesheet" href="css/registratie.css">
 </head>
 <body>
 
     <header>
- <div class="logo-container">
-    <a href="index.html">
-        
-        <div class="logo-placeholder"><img src="fotos/zoetermeer-logo.png" alt=""></div>
-        
-    </a>
-</div>
+        <div class="logo-container">
+            <a href="index.php">
+                <div class="logo-placeholder"><img src="fotos/zoetermeer-logo.png" alt=""></div>
+            </a>
+        </div>
 
         <nav class="nav-links">
-            <a href="https://google.com" target="_blank">Boeken</a>
+            <a href="boeken.php">Boeken</a>
             <a href="loginPagina.html">Inloggen</a>
         </nav>
     </header>
 
     <section class="hero-section">
         <div class="decorative-bg"></div>
-        
-
     </section>
-    <p class = "login-link"> Wel een account?<br> Meld je <a href="loginPagina.html">hier</a> aan.</p>
+    
+    <p class="login-link"> Wel een account?<br> Meld je <a href="loginPagina.html">hier</a> aan.</p>
 
     <div class="Registreren-container">
-    <p class="Registreren-text">Registreren</p>
-    <input type="text" class="Naam" placeholder="Naam">
-    <input type="text" class="E-mail" placeholder="E-mail">
-    <input type="text" class="Telefoonnummer" placeholder="Telefoonnummer">
-    <input type="password" class="Wachtwoord" placeholder="Wachtwoord">
-    <button class="Registreren-btn">Registreren</button>
-    <img src="fotos/bieb.png" class="Logo">
+        <p class="Registreren-text">Registreren</p>
+        
+        <form action="registratie_verwerk.php" method="POST">
+            <input type="text" name="naam" class="Naam" placeholder="Naam" required>
+            <input type="text" name="email" class="E-mail" placeholder="E-mail" required>
+            <input type="text" name="telefoon" class="Telefoonnummer" placeholder="Telefoonnummer">
+            <input type="password" name="wachtwoord" class="Wachtwoord" placeholder="Wachtwoord" required>
+            <button type="submit" class="Registreren-btn">Registreren</button>
+        </form>
+
+        <img src="fotos/bieb.png" class="Logo">
     </div>
 
 </body>
