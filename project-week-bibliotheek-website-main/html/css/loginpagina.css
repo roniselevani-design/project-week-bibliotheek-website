@@ -4,7 +4,7 @@
   width: 350px;
   position: absolute;
   bottom: 30px; 
-  left: 560px;
+  left: 585px;
   border-color:green; 
   border-radius:15px;
   border: 4px solid #333;      
@@ -41,8 +41,8 @@
 }
 .Login-text {
   position: relative;
-  top: 30px;
-  left: 60px;
+  top: 35px;
+  left: 30px;
   border-radius: 100px;
   z-index: 10;
   font-size: 40px;
@@ -58,7 +58,7 @@
 .registratie-link {
   position: absolute;
   bottom: 155px;
-  left: 587px;
+  left: 610px;
   font-size: 16px;
   z-index:11;
 }
