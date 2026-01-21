@@ -1,14 +1,24 @@
 <?php
 include 'db_connect.php';
 
-// 1. BASIS QUERY
+// 1. SEARCH VARIABELE DEFINIËREN
+$searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
+
+// 2. BASIS QUERY
 $sql = "SELECT * FROM boeken WHERE 1=1";
 $params = [];
 
-// 2. FILTER LOGICA
+// 3. FILTER LOGICA
 
-// Zoekbalk
-
+// --- ZOEKBALK (Nieuw: Zoeken via SQL) ---
+if (!empty($searchTerm)) {
+    // Zoek in Naam, Schrijver OF Genre
+    $sql .= " AND (Naam LIKE ? OR Schrijver LIKE ? OR Genre LIKE ?)";
+    // De % tekens betekenen "alles eromheen mag anders zijn"
+    $params[] = "%" . $searchTerm . "%";
+    $params[] = "%" . $searchTerm . "%";
+    $params[] = "%" . $searchTerm . "%";
+}
 
 // Genre filter
 if (!empty($_GET['genre'])) {
@@ -35,50 +45,12 @@ if (!empty($_GET['taal'])) {
     $params[] = $_GET['taal'];
 }
 
-// 3. HAAL DE DATA OP
+// 4. HAAL DE DATA OP
 $stmt = $conn->prepare($sql);
 $stmt->execute($params);
 $boeken = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// FUZZY SEARCH
-if ($searchTerm) {
-    $filtered = [];
 
-    foreach ($boeken as $boek) {
-        $velden = [
-            $boek['Naam'],
-            $boek['Schrijver'],
-            $boek['Genre']
-        ];
-
-        $besteScore = 0;
-
-        foreach ($velden as $veld) {
-            similar_text(
-                strtolower($searchTerm),
-                strtolower($veld),
-                $percentage
-            );
-
-            // Hogere drempel voor precisie
-            if ($percentage > $besteScore) {
-                $besteScore = $percentage;
-            }
-        }
-
-        // Minimale overeenkomst verhogen
-        if ($besteScore >= 85) {
-            $boek['match_score'] = $besteScore;
-            $filtered[] = $boek;
-        }
-    }
-
-    // Sorteer op beste match
-    usort($filtered, function($a, $b) {
-        return $b['match_score'] <=> $a['match_score'];
-    });
-
-    $boeken = $filtered;
-}
+// (Het PHP Fuzzy Search blok is hier verwijderd omdat SQL dit nu doet)
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -126,7 +98,7 @@ if ($searchTerm) {
                     class="search-input" 
                     placeholder="Zoeken"
                     autocomplete="off"
-                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>"
+                    value="<?php echo htmlspecialchars($searchTerm); ?>"
                 >
             </form>
         </div>
@@ -137,8 +109,8 @@ if ($searchTerm) {
     <aside class="sidebar">
         <h3>Filter</h3>
         <form action="index.php" method="GET" id="filterForm">
-            <?php if(!empty($_GET['search'])): ?>
-                <input type="hidden" name="search" value="<?php echo htmlspecialchars($_GET['search']); ?>">
+            <?php if(!empty($searchTerm)): ?>
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($searchTerm); ?>">
             <?php endif; ?>
 
             <div class="filter-group">
@@ -196,7 +168,7 @@ if ($searchTerm) {
                         <h2><?php echo htmlspecialchars($boek['Naam']); ?></h2>
                         <div class="sterren">
                             <?php 
-                            $aantalSterren = $boek['Sterren'];
+                            $aantalSterren = isset($boek['Sterren']) ? $boek['Sterren'] : 0;
                             for($i=0; $i<$aantalSterren; $i++) { echo "★"; } 
                             for($i=$aantalSterren; $i<5; $i++) { echo "<span style='color:#ccc'>★</span>"; }
                             ?>
