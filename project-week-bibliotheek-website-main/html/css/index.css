@@ -1,0 +1,80 @@
+/* --- blokken.css --- */
+
+/* De container waar de blokken in zitten */
+.blokken-container {
+    display: flex;            
+    justify-content: center;   
+    gap: 60px;                
+    padding: 120px 20px;        
+    flex-wrap: wrap;          
+}
+
+/* Opmaak van de individuele groene kaarten */
+.info-blok {
+    background-color: #3aa846; 
+    width: 400px;             
+    height: 250px;            
+    border-radius: 12px;       
+    border: 1px solid #2e8b38; 
+    
+    /* BELANGRIJK: relative zorgt dat we de oranje balk absoluut kunnen plaatsen */
+    position: relative; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Zorgt dat plaatjes die te groot zijn niet buiten de rand komen */
+    overflow: hidden; 
+}
+
+/* De afbeeldingen in het midden */
+.blok-plaatje {
+    max-width: 100%;  /* Zorg dat het plaatje niet te groot wordt */
+    max-height: 100%;
+    object-fit: contain;
+    margin-bottom: 20px; /* Ruimte maken voor de tekst onderin */
+}
+
+/* De oranje balk met tekst (NIEUW) */
+.blok-label {
+    position: absolute; 
+    bottom: 25px;       
+    left: 0;            
+    
+    background-color: #f39c12; 
+    color: black;
+    font-family: sans-serif;
+    font-size: 1.4rem;
+    
+    /* --- HIER IS DE AANPASSING --- */
+    width: 230px;           /* Zorgt dat ze allemaal even breed zijn */
+    box-sizing: border-box; /* Zorgt dat padding de breedte niet verpest */
+    /* ----------------------------- */
+
+    padding: 8px 20px 8px 7px; 
+    
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+/* --- Specifieke aanpassingen per plaatje --- */
+
+.klok {
+    /* Voorbeeld: De klok iets omhoog en naar rechts */
+    margin-top: 60px; 
+    margin-left: 100px;
+    /* Eventueel iets groter maken: */
+    /* transform: scale(1.1); */
+}
+
+.quiz {
+    /* Voorbeeld: De quiz wat meer naar links */
+    margin-top: 40px; 
+    margin-left: 10px;
+}
+
+.boeken {
+    /* Voorbeeld: De boekenstapel wat groter en naar beneden */
+    margin-top: 50px; 
+    margin-left: 140px;
+}

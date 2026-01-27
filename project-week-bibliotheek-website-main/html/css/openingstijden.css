@@ -1,0 +1,47 @@
+/* De container van het geheel */
+.openingstijden-container {
+  width: 300px; /* Pas aan naar wens */
+  font-family: sans-serif; /* Of jouw eigen font, bijv. Arial */
+  border: 1px solid #ddd; /* Dunne rand om alles bij elkaar te houden */
+  margin-left: 140px;
+}
+
+/* De grijze header bovenaan */
+.titel-balk {
+  background-color: #e6e6e6; /* Het grijs van de header */
+  padding: 15px;
+}
+
+.titel-balk h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Stijling voor elke rij (dag + tijd) */
+.dag-rij {
+  display: flex;
+  justify-content: space-between; /* Duwt dag en tijd uit elkaar */
+  padding: 8px 15px;
+  color: #333;
+}
+
+.dag {
+  font-weight: 700; /* Dikgedrukte dag */
+}
+
+/* Hier maken we het zebra-patroon.
+   We gebruiken 'nth-child(odd)' en 'nth-child(even)' 
+*/
+
+/* De oneven rijen (Maandag, Woensdag, etc.) - Net niet puur wit */
+.dag-rij:nth-child(odd) {
+  background-color: #f8f8f8; /* Zeer lichtgrijs/gebroken wit */
+}
+
+/* De even rijen (Dinsdag, Donderdag, etc.) - Iets donkerder */
+.dag-rij:nth-child(even) {
+  background-color: #eaeaea; /* Iets donkerder grijs */
+}
+
